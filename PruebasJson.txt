@@ -1,0 +1,138 @@
+# EJEMPLOS JSON PARA PROBAR ENDPOINTS POST
+# =========================================
+# Proyecto: gym-persona-api
+# Base URL: http://localhost:8080
+
+# =========================================
+# 1. CLIENTE - POST /api/clientes
+# =========================================
+# Nota: perId en Cliente y en persona debe ser el mismo (@MapsId)
+# La persona se crea en cascada (cascade ALL)
+
+curl -X POST http://localhost:8080/api/clientes \
+  -H "Content-Type: application/json" \
+  -d '{
+  "perId": 1,
+  "persona": {
+    "perId": 1,
+    "perCedula": "1712345678",
+    "usuId": 1,
+    "perNombres": "Juan Carlos",
+    "perApellidos": "Pérez López",
+    "perFechaNacimiento": "1990-05-15",
+    "perGenero": "M",
+    "perTelefono": "0991234567",
+    "perDireccion": "Av. Amazonas N24-123 y Colón"
+  },
+  "perPeso": 75.5,
+  "perAltura": 1.78,
+  "perEnfermedades": "Ninguna",
+  "perLesiones": "Lesión antigua en rodilla derecha",
+  "perObjetivo": "Bajar de peso y tonificar",
+  "perFreDeportiva": "3 veces por semana",
+  "perHabitos": "Duerme 7 horas, come 3 veces al día",
+  "rolId": 2
+}'
+
+# Validaciones: perPeso > 0, perAltura > 0, perObjetivo no vacío
+
+# =========================================
+# 2. PROFESIONAL - POST /api/profesionales
+# =========================================
+# Nota: medUsuId es String (PK). La persona se une por per_cedula (debe existir)
+
+curl -X POST http://localhost:8080/api/profesionales \
+  -H "Content-Type: application/json" \
+  -d '{
+  "medUsuId": "MED-2024-001",
+  "persona": {
+    "perId": 2,
+    "perCedula": "1798765432",
+    "usuId": 2,
+    "perNombres": "María",
+    "perApellidos": "González Ruiz",
+    "perFechaNacimiento": "1985-03-22",
+    "perGenero": "F",
+    "perTelefono": "0987654321",
+    "perDireccion": "Calle 10 de Agosto 1234"
+  },
+  "rolId": 3,
+  "medNumeroLicencia": "MED-001234",
+  "medEspecialidad": "Medicina Deportiva"
+}'
+
+# Validaciones: medNumeroLicencia no vacío, medEspecialidad no vacío
+
+# =========================================
+# 3. ENTRENADOR - POST /api/entrenadores
+# =========================================
+# Nota: entId autogenerado. La persona se une por per_cedula (debe existir)
+
+curl -X POST http://localhost:8080/api/entrenadores \
+  -H "Content-Type: application/json" \
+  -d '{
+  "persona": {
+    "perId": 3,
+    "perCedula": "1723456789",
+    "usuId": 3,
+    "perNombres": "Carlos",
+    "perApellidos": "Andrade Mora",
+    "perFechaNacimiento": "1992-08-10",
+    "perGenero": "M",
+    "perTelefono": "0976543210",
+    "perDireccion": "Av. 6 de Diciembre N34-56"
+  },
+  "entEspecialidad": "Entrenamiento Funcional",
+  "entProfesion": "Lic. en Educación Física",
+  "entExperiencia": "5 años en gimnasios de alto rendimiento"
+}'
+
+# Validaciones: entEspecialidad no vacío, entProfesion no vacío
+
+# =========================================
+# 4. CONSENTIMIENTO - POST /api/consentimientos
+# =========================================
+# Nota: conId autogenerado. Solo requiere version del documento
+
+curl -X POST http://localhost:8080/api/consentimientos \
+  -H "Content-Type: application/json" \
+  -d '{
+  "conVersionDocumento": "v1.0-2024"
+}'
+
+# =========================================
+# 5. USUARIO CONSENTIMIENTO - POST /api/usuario-consentimientos/aceptar
+# =========================================
+# Usa query params, NO JSON body
+
+curl -X POST "http://localhost:8080/api/usuario-consentimientos/aceptar?usuId=1&conId=1"
+
+# =========================================
+# 6. USUARIO CONSENTIMIENTO POR VERSION - POST /api/usuario-consentimientos/aceptar/version
+# =========================================
+# Usa query params, NO JSON body
+
+curl -X POST "http://localhost:8080/api/usuario-consentimientos/aceptar/version?usuId=1&versionDocumento=v1.0-2024"
+
+# =========================================
+# RESUMEN DE RELACIONES Y REQUISITOS
+# =========================================
+#
+# | Entidad            | PK              | Relación con Persona      | Requiere Persona previa |
+# |--------------------|-----------------|---------------------------|------------------------|
+# | Cliente            | perId (Long)    | @MapsId (mismo ID)        | Sí (cascade ALL)       |
+# | Profesional        | medUsuId (Str)  | @JoinColumn(per_cedula)   | Sí (por cédula)        |
+# | Entrenador         | entId (Long,AI) | @ManyToOne(per_cedula)    | Sí (por cédula)        |
+# | Consentimiento     | conId (Long,AI) | N/A                       | No                     |
+# | UsuarioConsent.    | Compuesta       | @MapsId(usuId)->perId     | Sí (usuario + consent.)|
+#
+# VALIDACIONES BEAN VALIDATION:
+# - Cliente: perPeso>0, perAltura>0, perObjetivo @NotBlank
+# - Profesional: medNumeroLicencia @NotBlank, medEspecialidad @NotBlank
+# - Entrenador: entEspecialidad @NotBlank, entProfesion @NotBlank
+#
+# FLUJO RECOMENDADO:
+# 1. Crear Persona (o dejar que cascade la cree con Cliente)
+# 2. Crear Consentimiento (v1.0-2024)
+# 3. Crear Cliente/Profesional/Entrenador (usando cédula de persona existente)
+# 4. Aceptar consentimiento: POST /aceptar?usuId=X&conId=Y
