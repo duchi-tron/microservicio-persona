@@ -1,7 +1,10 @@
 package com.micro.gym_persona_api.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -16,9 +19,10 @@ public class Profesional {
 
     @Id
     @Column(name = "med_usu_id", nullable = false, length = 100)
-    private String medUsuId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long medUsuId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "per_cedula", referencedColumnName = "per_cedula", nullable = false)
     @JsonManagedReference("profesional")
     private Persona persona;
@@ -37,7 +41,7 @@ public class Profesional {
     public Profesional() {
     }
 
-    public Profesional(String medUsuId, Persona persona, Long rolId, String medNumeroLicencia, String medEspecialidad) {
+    public Profesional(Long medUsuId, Persona persona, Long rolId, String medNumeroLicencia, String medEspecialidad) {
         this.medUsuId = medUsuId;
         this.persona = persona;
         this.rolId = rolId;
@@ -45,11 +49,11 @@ public class Profesional {
         this.medEspecialidad = medEspecialidad;
     }
 
-    public String getMedUsuId() {
+    public Long getMedUsuId() {
         return medUsuId;
     }
 
-    public void setMedUsuId(String medUsuId) {
+    public void setMedUsuId(Long medUsuId) {
         this.medUsuId = medUsuId;
     }
 

@@ -9,7 +9,7 @@ import com.micro.gym_persona_api.model.Profesional;
 
 
 @Repository
-public interface ProfesionalRepository extends JpaRepository<Profesional, String> {
+public interface ProfesionalRepository extends JpaRepository<Profesional, Long> {
     Optional<Profesional> findByMedNumeroLicencia(String medNumeroLicencia);
     Optional<Profesional> findByPersonaPerCedula(String perCedula);
 }

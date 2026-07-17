@@ -1,0 +1,27 @@
+# Reglas de Proyecto: gym-persona-api (Spring Boot + PostgreSQL)
+
+## Tecnologías y Stack
+- Backend: Java 21+
+- Framework: Spring Boot 3.x
+- Base de Datos: PostgreSQL
+- Build Tool: Maven (siempre usar `./mvnw` para comandos de build)
+
+## Principios de Código
+- Estilo: Seguir las convenciones de nomenclatura de Java (CamelCase para métodos/variables, PascalCase para clases).
+- Clean Architecture: Mantener la separación entre Controller, Service, Repository y DTOs.
+- DTOs: No exponer directamente las Entidades JPA en los controladores; usar DTOs para las peticiones y respuestas.
+- Seguridad: Si se propone autenticación, utilizar Spring Security con JWT.
+
+## Gestión de Base de Datos
+- Siempre que se modifiquen entidades, verificar que las anotaciones de JPA (`@Entity`, `@Table`, `@Column`) sean coherentes con el esquema de PostgreSQL.
+- Al escribir queries JPQL o SQL nativo, asegurar compatibilidad con la sintaxis de PostgreSQL.
+
+## Flujo de Trabajo con el Agente
+- Antes de modificar `application.properties`, verificar las variables de entorno para no exponer credenciales.
+- Al generar tests, priorizar JUnit 5 y Mockito.
+- Siempre que se proponga un cambio estructural, explicar brevemente por qué se ajusta a la arquitectura actual.
+
+## Comportamiento del Agente
+- Sé conciso: prioriza el código sobre la explicación excesiva.
+- Ante errores: analiza primero los logs de la consola y la configuración de `application.properties` antes de sugerir cambios en el código.
+- Si el usuario solicita un cambio en la API, asume que el formato de respuesta debe ser JSON.

@@ -33,7 +33,7 @@ public class ProfesionalServiceImpl implements ProfesionalService {
     }
 
     @Override
-    public Optional<Profesional> buscarPorId(String medUsuId) {
+    public Optional<Profesional> buscarPorId(Long medUsuId) {
         return profesionalRepository.findById(medUsuId);
     }
 

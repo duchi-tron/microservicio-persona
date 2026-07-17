@@ -1,7 +1,6 @@
 package com.micro.gym_persona_api.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class ProfesionalRequestDTO {
@@ -13,9 +12,6 @@ public class ProfesionalRequestDTO {
     @NotBlank(message = "La especialidad es obligatoria")
     @Size(max = 100, message = "La especialidad no puede exceder 100 caracteres")
     private String medEspecialidad;
-
-    @NotNull(message = "El ID de usuario médico es obligatorio")
-    private String medUsuId;
 
     @NotBlank(message = "La cédula de la persona es obligatoria")
     @Size(max = 20, message = "La cédula no puede exceder 20 caracteres")
@@ -38,14 +34,6 @@ public class ProfesionalRequestDTO {
 
     public void setMedEspecialidad(String medEspecialidad) {
         this.medEspecialidad = medEspecialidad;
-    }
-
-    public String getMedUsuId() {
-        return medUsuId;
-    }
-
-    public void setMedUsuId(String medUsuId) {
-        this.medUsuId = medUsuId;
     }
 
     public String getPerCedula() {

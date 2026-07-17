@@ -29,7 +29,7 @@ public class ClienteServiceImpl implements ClienteService {
     public Cliente guardar(@Valid Cliente cliente) {
         validarCliente(cliente);
         vincularPersona(cliente);
-        return repository.save(cliente);
+        return repository.save(cliente);    
     }
 
     @Override
@@ -81,8 +81,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     private void vincularPersona(Cliente cliente) {
-        if (cliente.getPersona() != null) {
-            cliente.setPersona(cliente.getPersona());
-        }
+    if (cliente.getPersona() != null) {    
+        cliente.setPersona(cliente.getPersona());
     }
+}
 }

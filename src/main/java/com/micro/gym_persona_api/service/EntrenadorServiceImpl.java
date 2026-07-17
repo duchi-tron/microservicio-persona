@@ -20,11 +20,17 @@ public EntrenadorServiceImpl(EntrenadorRepository entrenadorRepository) {
         this.entrenadorRepository = entrenadorRepository;
     }
 
-    @Override
+   @Override
     @Transactional
     public Entrenador guardarEntrenador(@Valid Entrenador entrenador) {
         validarEntrenador(entrenador);
+        
+        if (entrenador.getPersona() != null) {
+            entrenador.getPersona().setUsuId(null);
+        }
+        
         vincularPersona(entrenador);
+        
         return entrenadorRepository.save(entrenador);
     }
 
