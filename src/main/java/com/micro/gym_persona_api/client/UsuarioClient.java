@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.micro.gym_persona_api.dto.UsuarioResponseDTO;
 
-@FeignClient(name = "usuario-service", url = "http://localhost:8071") // Puerto del Usuario Service
+@FeignClient(name = "usuario-service", url = "${userService.url}")
 public interface UsuarioClient {
     @GetMapping("/api/usuarios/{id}")
     UsuarioResponseDTO obtenerUsuario(@PathVariable("id") Long id);
