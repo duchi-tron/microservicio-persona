@@ -1,5 +1,6 @@
 package com.micro.gym_persona_api.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ import com.micro.gym_persona_api.model.Profesional;
 public interface ProfesionalRepository extends JpaRepository<Profesional, Long> {
     Optional<Profesional> findByMedNumeroLicencia(String medNumeroLicencia);
     Optional<Profesional> findByPersonaPerCedula(String perCedula);
+    List<Profesional> findByMedEspecialidad(com.micro.gym_persona_api.model.Profesional.Especialidad medEspecialidad);
 }

@@ -3,15 +3,19 @@ package com.micro.gym_persona_api.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "tb_persona", schema = "persona_db")
@@ -46,17 +50,21 @@ public class Persona {
     @Column(name = "per_direccion")
     private String perDireccion;
 
-    @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference("entrenador")
     private Entrenador entrenador;
 
-    @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference("profesional")
     private Profesional profesional;
 
-    @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference("cliente")
     private Cliente cliente;
+
+    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("usuario-consentimiento-persona")
+    private List<UsuarioConsentimiento> usuarioConsentimientos;
 
     public Persona() {
     }
@@ -168,5 +176,13 @@ public class Persona {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public List<UsuarioConsentimiento> getUsuarioConsentimientos() {
+        return usuarioConsentimientos;
+    }
+
+    public void setUsuarioConsentimientos(List<UsuarioConsentimiento> usuarioConsentimientos) {
+        this.usuarioConsentimientos = usuarioConsentimientos;
     }
 }

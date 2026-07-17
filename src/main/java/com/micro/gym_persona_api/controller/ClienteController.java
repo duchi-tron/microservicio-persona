@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.micro.gym_persona_api.model.Cliente;
 import com.micro.gym_persona_api.service.ClienteService;
 
-
 import jakarta.validation.Valid;
 
 
@@ -32,7 +31,7 @@ public class ClienteController {
     }
 
     @GetMapping
-    public List<Cliente> listar() {
+    public List<Cliente> listarClientes() {
         return service.listarClientes();
     }
     

@@ -47,6 +47,11 @@ public class ProfesionalServiceImpl implements ProfesionalService {
         return profesionalRepository.findByPersonaPerCedula(perCedula);
     }
 
+    @Override
+    public List<Profesional> buscarPorEspecialidad(Profesional.Especialidad especialidad) {
+        return profesionalRepository.findByMedEspecialidad(especialidad);
+    }
+
     private void validarProfesional(Profesional profesional) {
         if (profesional.getPersona() == null) {
             throw new IllegalArgumentException("La persona es obligatoria para el profesional");
@@ -63,7 +68,7 @@ public class ProfesionalServiceImpl implements ProfesionalService {
         if (profesional.getMedNumeroLicencia() == null || profesional.getMedNumeroLicencia().isBlank()) {
             throw new IllegalArgumentException("El número de licencia es obligatorio");
         }
-        if (profesional.getMedEspecialidad() == null || profesional.getMedEspecialidad().isBlank()) {
+        if (profesional.getMedEspecialidad() == null) {
             throw new IllegalArgumentException("La especialidad es obligatoria");
         }
 

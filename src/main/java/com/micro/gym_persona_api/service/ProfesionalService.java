@@ -11,4 +11,5 @@ public interface ProfesionalService {
     Optional<Profesional> buscarPorId(Long medUsuId);
     Optional<Profesional> buscarPorLicencia(String medNumeroLicencia);
     Optional<Profesional> buscarPorPersonaCedula(String perCedula);
+    List<Profesional> buscarPorEspecialidad(Profesional.Especialidad especialidad);
 }

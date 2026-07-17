@@ -1,8 +1,13 @@
 package com.micro.gym_persona_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,8 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "tb_profesional", schema = "persona_db")
@@ -22,9 +25,9 @@ public class Profesional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long medUsuId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "per_cedula", referencedColumnName = "per_cedula", nullable = false)
-    @JsonManagedReference("profesional")
+    @JsonIgnore
     private Persona persona;
 
     @Column(name = "rol_id")
@@ -36,7 +39,17 @@ public class Profesional {
 
     @Column(name = "med_especialidad", nullable = false, length = 100)
     @NotBlank(message = "La especialidad es obligatoria")
-    private String medEspecialidad;
+    @Enumerated(EnumType.STRING)
+    private Especialidad medEspecialidad;
+
+    public enum Especialidad {
+        NUTRICIONISTA,
+        ENTRENADOR_PERSONAL,
+        FISIOTERAPEUTA,
+        PSICOLOGO_DEPORTIVO,
+        MEDICO_DEPORTIVO,
+        CONSULTA_GENERAL
+    }
 
     public Profesional() {
     }
@@ -46,7 +59,7 @@ public class Profesional {
         this.persona = persona;
         this.rolId = rolId;
         this.medNumeroLicencia = medNumeroLicencia;
-        this.medEspecialidad = medEspecialidad;
+        this.medEspecialidad = Especialidad.valueOf(medEspecialidad);
     }
 
     public Long getMedUsuId() {
@@ -84,11 +97,11 @@ public class Profesional {
         this.medNumeroLicencia = medNumeroLicencia;
     }
 
-    public String getMedEspecialidad() {
+    public Especialidad getMedEspecialidad() {
         return medEspecialidad;
     }
 
-    public void setMedEspecialidad(String medEspecialidad) {
+    public void setMedEspecialidad(Especialidad medEspecialidad) {
         this.medEspecialidad = medEspecialidad;
     }
 }
