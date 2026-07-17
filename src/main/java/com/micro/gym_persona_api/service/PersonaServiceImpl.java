@@ -21,18 +21,7 @@ public class PersonaServiceImpl implements PersonaService {
    @Override
 @Transactional
 public Persona registrarPersona(Persona persona) {
-    // 1. Validar existencia en el microservicio de Usuarios (El "Puente")
-    // Esto garantiza que el usuId que recibes realmente exista en el otro micro
-    try {
-        var usuario = usuarioClient.obtenerUsuario(persona.getUsuId());
-        if (usuario == null) {
-            throw new ConflictException("No se encontró un usuario registrado con ID: " + persona.getUsuId());
-        }
-    } catch (Exception e) {
-        throw new ConflictException("Error al conectar con el servicio de usuarios: " + e.getMessage());
-    }
-
-    // 2. Tus validaciones actuales se mantienen intactas
+    // Tus validaciones actuales se mantienen intactas
     if (personaRepository.existsByPerCedula(persona.getPerCedula())) {
         throw new ConflictException("Ya existe una persona con la cédula: " + persona.getPerCedula());
     }
