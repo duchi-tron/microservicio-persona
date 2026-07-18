@@ -9,5 +9,5 @@ import com.micro.gym_persona_api.model.Entrenador;
 
 @Repository
 public interface EntrenadorRepository extends JpaRepository<Entrenador, Long> {
-    List<Entrenador> findByEntEspecialidad(String entEspecialidad);
+    List<Entrenador> findByEntEspecialidad(com.micro.gym_persona_api.model.Entrenador.Especialidad entEspecialidad);
 }

@@ -45,7 +45,7 @@ public EntrenadorServiceImpl(EntrenadorRepository entrenadorRepository) {
     }
 
     @Override
-    public List<Entrenador> buscarPorEspecialidad(String entEspecialidad) {
+    public List<Entrenador> buscarPorEspecialidad(Entrenador.Especialidad entEspecialidad) {
         return entrenadorRepository.findByEntEspecialidad(entEspecialidad);
     }
 
@@ -71,7 +71,7 @@ public EntrenadorServiceImpl(EntrenadorRepository entrenadorRepository) {
         if (entrenador.getPersona().getPerApellidos() == null || entrenador.getPersona().getPerApellidos().isBlank()) {
             throw new IllegalArgumentException("Los apellidos son obligatorios");
         }
-        if (entrenador.getEntEspecialidad() == null || entrenador.getEntEspecialidad().isBlank()) {
+        if (entrenador.getEntEspecialidad() == null) {
             throw new IllegalArgumentException("La especialidad es obligatoria");
         }
         if (entrenador.getEntProfesion() == null || entrenador.getEntProfesion().isBlank()) {

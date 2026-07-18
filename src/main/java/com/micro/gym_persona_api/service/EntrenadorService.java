@@ -10,7 +10,7 @@ public interface EntrenadorService {
     Entrenador guardarEntrenador(Entrenador entrenador);
     List<Entrenador> listarEntrenadores();
     Optional<Entrenador> buscarPorId(Long entId);
-    List<Entrenador> buscarPorEspecialidad(String entEspecialidad);
+    List<Entrenador> buscarPorEspecialidad(Entrenador.Especialidad entEspecialidad);
     void eliminarEntrenador(Long entId);
 
 }

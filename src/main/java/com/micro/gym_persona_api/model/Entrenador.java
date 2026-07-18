@@ -1,8 +1,12 @@
 package com.micro.gym_persona_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,8 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_entrenador", schema = "persona_db")
@@ -29,8 +32,18 @@ public class Entrenador {
     private Persona persona;
 
     @Column(name = "ent_especialidad", nullable = false, length = 100)
-    @NotBlank(message = "La especialidad es obligatoria")
-    private String entEspecialidad;
+    @NotNull(message = "La especialidad es obligatoria")
+    @Enumerated(EnumType.STRING)
+    private Especialidad entEspecialidad;
+
+    public enum Especialidad {
+        CROSSFIT,
+        YOGA,
+        SPINNING,
+        FUNCIONAL,
+        BOXEO,
+        PILATES
+    }
 
     @Column(name = "ent_profesion", nullable = false, length = 100)
     @NotBlank(message = "La profesión es obligatoria")
@@ -42,7 +55,7 @@ public class Entrenador {
     public Entrenador() {
     }
 
-    public Entrenador(Long entId, Persona persona, String entEspecialidad, String entProfesion, String entExperiencia) {
+    public Entrenador(Long entId, Persona persona, Especialidad entEspecialidad, String entProfesion, String entExperiencia) {
         this.entId = entId;
         this.persona = persona;
         this.entEspecialidad = entEspecialidad;
@@ -66,11 +79,11 @@ public class Entrenador {
         this.persona = persona;
     }
 
-    public String getEntEspecialidad() {
+    public Especialidad getEntEspecialidad() {
         return entEspecialidad;
     }
 
-    public void setEntEspecialidad(String entEspecialidad) {
+    public void setEntEspecialidad(Especialidad entEspecialidad) {
         this.entEspecialidad = entEspecialidad;
     }
 

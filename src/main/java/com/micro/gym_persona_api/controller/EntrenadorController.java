@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,6 +41,11 @@ public class EntrenadorController {
     public Entrenador findById(@PathVariable Long perId) {
         return service.buscarPorId(perId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entrenador no encontrado con ID: " + perId));
+    }
+
+    @GetMapping("/especialidad")
+    public List<Entrenador> buscarPorEspecialidad(@RequestParam Entrenador.Especialidad especialidad) {
+        return service.buscarPorEspecialidad(especialidad);
     }
 
 }
