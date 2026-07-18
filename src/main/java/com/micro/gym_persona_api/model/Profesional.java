@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_profesional", schema = "persona_db")
@@ -37,7 +38,7 @@ public class Profesional {
     private String medNumeroLicencia;
 
     @Column(name = "med_especialidad", nullable = false, length = 100)
-    @NotBlank(message = "La especialidad es obligatoria")
+    @NotNull(message = "La especialidad es obligatoria")
     @Enumerated(EnumType.STRING)
     private Especialidad medEspecialidad;
 
