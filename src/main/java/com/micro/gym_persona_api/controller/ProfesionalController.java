@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.micro.gym_persona_api.model.Profesional;
@@ -42,5 +43,12 @@ public class ProfesionalController {
     @GetMapping("/especialidad/{especialidad}")
     public List<Profesional> buscarPorEspecialidad(@PathVariable Profesional.Especialidad especialidad) {
         return service.buscarPorEspecialidad(especialidad);
+    }
+
+    @GetMapping("/buscar/por-persona")
+    public ResponseEntity<Profesional> buscarPorPerId(@RequestParam Long perId) {
+        return service.buscarPorPerId(perId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
