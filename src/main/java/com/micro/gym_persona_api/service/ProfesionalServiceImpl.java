@@ -7,14 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.micro.gym_persona_api.model.Profesional;
+import com.micro.gym_persona_api.repository.PersonaRepository;
 import com.micro.gym_persona_api.repository.ProfesionalRepository;
 
 @Service
 public class ProfesionalServiceImpl implements ProfesionalService {
     private final ProfesionalRepository profesionalRepository;
+    private final PersonaRepository personaRepository;
 
-    public ProfesionalServiceImpl(ProfesionalRepository profesionalRepository) {
+    public ProfesionalServiceImpl(ProfesionalRepository profesionalRepository, PersonaRepository personaRepository) {
         this.profesionalRepository = profesionalRepository;
+        this.personaRepository = personaRepository;
     }
 
     @Override
@@ -52,6 +55,9 @@ public class ProfesionalServiceImpl implements ProfesionalService {
     private void validarProfesional(Profesional profesional) {
         if (profesional.getPerId() == null) {
             throw new IllegalArgumentException("El perId es obligatorio para el profesional");
+        }
+        if (!personaRepository.existsById(profesional.getPerId())) {
+            throw new IllegalArgumentException("No existe una persona con el ID: " + profesional.getPerId());
         }
         if (profesional.getMedNumeroLicencia() == null || profesional.getMedNumeroLicencia().isBlank()) {
             throw new IllegalArgumentException("El número de licencia es obligatorio");

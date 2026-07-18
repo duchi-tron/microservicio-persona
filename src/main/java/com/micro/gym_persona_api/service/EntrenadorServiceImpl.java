@@ -8,29 +8,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.micro.gym_persona_api.model.Entrenador;
 import com.micro.gym_persona_api.repository.EntrenadorRepository;
-
-import jakarta.validation.Valid;
+import com.micro.gym_persona_api.repository.PersonaRepository;
 
 @Service
 public class EntrenadorServiceImpl implements EntrenadorService {
 
     private final EntrenadorRepository entrenadorRepository;
+    private final PersonaRepository personaRepository;
 
-public EntrenadorServiceImpl(EntrenadorRepository entrenadorRepository) {
+    public EntrenadorServiceImpl(EntrenadorRepository entrenadorRepository, PersonaRepository personaRepository) {
         this.entrenadorRepository = entrenadorRepository;
+        this.personaRepository = personaRepository;
     }
 
-   @Override
+    @Override
     @Transactional
-    public Entrenador guardarEntrenador(@Valid Entrenador entrenador) {
+    public Entrenador guardarEntrenador(Entrenador entrenador) {
         validarEntrenador(entrenador);
-        
-        if (entrenador.getPersona() != null) {
-            entrenador.getPersona().setUsuId(null);
-        }
-        
-        vincularPersona(entrenador);
-        
         return entrenadorRepository.save(entrenador);
     }
 
@@ -59,29 +53,17 @@ public EntrenadorServiceImpl(EntrenadorRepository entrenadorRepository) {
     }
 
     private void validarEntrenador(Entrenador entrenador) {
-        if (entrenador.getPersona() == null) {
-            throw new IllegalArgumentException("La persona es obligatoria para el entrenador");
+        if (entrenador.getPerId() == null) {
+            throw new IllegalArgumentException("El perId es obligatorio para el entrenador");
         }
-        if (entrenador.getPersona().getPerCedula() == null || entrenador.getPersona().getPerCedula().isBlank()) {
-            throw new IllegalArgumentException("La cédula es obligatoria");
-        }
-        if (entrenador.getPersona().getPerNombres() == null || entrenador.getPersona().getPerNombres().isBlank()) {
-            throw new IllegalArgumentException("Los nombres son obligatorios");
-        }
-        if (entrenador.getPersona().getPerApellidos() == null || entrenador.getPersona().getPerApellidos().isBlank()) {
-            throw new IllegalArgumentException("Los apellidos son obligatorios");
+        if (!personaRepository.existsById(entrenador.getPerId())) {
+            throw new IllegalArgumentException("No existe una persona con el ID: " + entrenador.getPerId());
         }
         if (entrenador.getEntEspecialidad() == null) {
             throw new IllegalArgumentException("La especialidad es obligatoria");
         }
         if (entrenador.getEntProfesion() == null || entrenador.getEntProfesion().isBlank()) {
             throw new IllegalArgumentException("La profesión es obligatoria");
-        }
-    }
-
-    private void vincularPersona(Entrenador entrenador) {
-        if (entrenador.getPersona() != null) {
-            entrenador.setPersona(entrenador.getPersona());
         }
     }
 
