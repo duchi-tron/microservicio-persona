@@ -9,7 +9,14 @@ DROP TABLE IF EXISTS persona_db.tb_consentimiento CASCADE;
 -- 2. Crear tabla tb_consentimiento
 CREATE TABLE persona_db.tb_consentimiento (
     con_id BIGSERIAL PRIMARY KEY,
-    con_version_documento VARCHAR(100) NOT NULL
+    con_version_documento VARCHAR(100) NOT NULL UNIQUE,
+    per_id BIGINT NOT NULL,
+    
+    CONSTRAINT fk_consentimiento_persona
+        FOREIGN KEY (per_id)
+        REFERENCES persona_db.tb_persona (per_id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
 
 -- 3. Crear tabla tb_usuario_consentimiento
@@ -38,10 +45,14 @@ CREATE INDEX idx_usuario_consentimiento_fecha
 CREATE INDEX idx_usuario_consentimiento_usu_id 
     ON persona_db.tb_usuario_consentimiento (usu_id);
 
+CREATE INDEX idx_consentimiento_per_id 
+    ON persona_db.tb_consentimiento (per_id);
+
 -- Comentarios para documentación
 COMMENT ON TABLE persona_db.tb_consentimiento IS 'Catálogo de versiones de documentos de consentimiento';
 COMMENT ON COLUMN persona_db.tb_consentimiento.con_id IS 'Identificador único del consentimiento';
 COMMENT ON COLUMN persona_db.tb_consentimiento.con_version_documento IS 'Versión del documento de consentimiento';
+COMMENT ON COLUMN persona_db.tb_consentimiento.per_id IS 'FK a tb_persona - persona que creó/propuso el consentimiento';
 
 COMMENT ON TABLE persona_db.tb_usuario_consentimiento IS 'Registro de aceptaciones de consentimiento por usuario';
 COMMENT ON COLUMN persona_db.tb_usuario_consentimiento.usu_id IS 'Referencia al ID de usuario (gestión en microservicio externo)';

@@ -1,12 +1,13 @@
 package com.micro.gym_persona_api.controller;
 
+import com.micro.gym_persona_api.dto.ConsentimientoRequestDTO;
 import com.micro.gym_persona_api.model.Consentimiento;
 import com.micro.gym_persona_api.service.ConsentimientoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/personas/consentimientos")
@@ -19,10 +20,17 @@ public class ConsentimientoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> guardar(@RequestBody Consentimiento consentimiento) {
+    public ResponseEntity<?> guardar(@Valid @RequestBody ConsentimientoRequestDTO request) {
         try {
+            Consentimiento consentimiento = new Consentimiento();
+            consentimiento.setConVersionDocumento(request.getConVersionDocumento());
+
+            com.micro.gym_persona_api.model.Persona persona = new com.micro.gym_persona_api.model.Persona();
+            persona.setPerId(request.getPerId());
+            consentimiento.setPersona(persona);
+
             return ResponseEntity.status(201).body(service.save(consentimiento));
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -44,5 +52,14 @@ public class ConsentimientoController {
         return service.findByVersionDocumento(versionDocumento)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/persona/{perId}")
+    public ResponseEntity<List<Consentimiento>> obtenerPorPersona(@PathVariable Long perId) {
+        List<Consentimiento> consentimientos = service.findByPerId(perId);
+        if (consentimientos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(consentimientos);
     }
 }
