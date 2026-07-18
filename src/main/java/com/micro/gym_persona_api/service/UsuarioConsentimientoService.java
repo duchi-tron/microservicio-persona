@@ -31,6 +31,16 @@ public class UsuarioConsentimientoService {
     }
 
     @Transactional(readOnly = true)
+    public List<UsuarioConsentimiento> findByPerId(Long perId) {
+        return usuarioConsentimientoRepository.findById_UsuId(perId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UsuarioConsentimiento> findByConId(Long conId) {
+        return usuarioConsentimientoRepository.findByConsentimientoConId(conId);
+    }
+
+    @Transactional(readOnly = true)
     public Optional<UsuarioConsentimiento> findByUsuIdAndConId(Long usuId, Long conId) {
         return usuarioConsentimientoRepository.findById(new UsuarioConsentimientoId(usuId, conId));
     }

@@ -48,6 +48,16 @@ public class UsuarioConsentimientoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/buscar/por-persona")
+    public List<UsuarioConsentimiento> buscarPorPerId(@RequestParam Long perId) {
+        return service.findByPerId(perId);
+    }
+
+    @GetMapping("/buscar/por-consentimiento")
+    public List<UsuarioConsentimiento> buscarPorConId(@RequestParam Long conId) {
+        return service.findByConId(conId);
+    }
+
     @GetMapping("/usuario/{usuId}/verificar/{conId}")
     public ResponseEntity<Boolean> verificarAceptacion(@PathVariable Long usuId, @PathVariable Long conId) {
         return ResponseEntity.ok(service.haAceptado(usuId, conId));

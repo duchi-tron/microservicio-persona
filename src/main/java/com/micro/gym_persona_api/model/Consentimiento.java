@@ -36,6 +36,9 @@ public class Consentimiento {
     @OneToMany(mappedBy = "consentimiento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference("usuario-consentimiento-consentimiento")
     private List<UsuarioConsentimiento> usuarioConsentimientos;
+    
+    @Column(name = "con_detalles", length = 255)
+    private String conDetalles;
 
     public Consentimiento() {
     }
