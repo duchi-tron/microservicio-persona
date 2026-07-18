@@ -2,7 +2,6 @@ package com.micro.gym_persona_api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,7 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
@@ -25,13 +24,13 @@ public class Profesional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long medUsuId;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "per_cedula", referencedColumnName = "per_cedula", nullable = false)
+    @Column(name = "per_id", nullable = false)
+    private Long perId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "per_id", insertable = false, updatable = false)
     @JsonIgnore
     private Persona persona;
-
-    @Column(name = "rol_id")
-    private Long rolId;
 
     @Column(name = "med_numero_licencia", unique = true, nullable = false, length = 50)
     @NotBlank(message = "El número de licencia es obligatorio")
@@ -54,14 +53,6 @@ public class Profesional {
     public Profesional() {
     }
 
-    public Profesional(Long medUsuId, Persona persona, Long rolId, String medNumeroLicencia, String medEspecialidad) {
-        this.medUsuId = medUsuId;
-        this.persona = persona;
-        this.rolId = rolId;
-        this.medNumeroLicencia = medNumeroLicencia;
-        this.medEspecialidad = Especialidad.valueOf(medEspecialidad);
-    }
-
     public Long getMedUsuId() {
         return medUsuId;
     }
@@ -70,23 +61,20 @@ public class Profesional {
         this.medUsuId = medUsuId;
     }
 
+    public Long getPerId() {
+        return perId;
+    }
+
+    public void setPerId(Long perId) {
+        this.perId = perId;
+    }
+
     public Persona getPersona() {
         return persona;
     }
 
     public void setPersona(Persona persona) {
         this.persona = persona;
-        if (persona != null) {
-            persona.setProfesional(this);
-        }
-    }
-
-    public Long getRolId() {
-        return rolId;
-    }
-
-    public void setRolId(Long rolId) {
-        this.rolId = rolId;
     }
 
     public String getMedNumeroLicencia() {

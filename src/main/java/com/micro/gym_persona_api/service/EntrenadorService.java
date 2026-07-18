@@ -9,8 +9,8 @@ public interface EntrenadorService {
 
     Entrenador guardarEntrenador(Entrenador entrenador);
     List<Entrenador> listarEntrenadores();
-    Optional<Entrenador> buscarPorId(Long entId);
+    Optional<Entrenador> buscarPorId(Long perId);
     List<Entrenador> buscarPorEspecialidad(Entrenador.Especialidad entEspecialidad);
-    void eliminarEntrenador(Long entId);
+    void eliminarEntrenador(Long perId);
 
 }

@@ -2,7 +2,6 @@ package com.micro.gym_persona_api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,8 +25,11 @@ public class Entrenador {
     @Column(name = "ent_id")
     private Long entId;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "per_cedula", referencedColumnName = "per_cedula", nullable = false)
+    @Column(name = "per_id", nullable = false)
+    private Long perId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "per_id", insertable = false, updatable = false)
     @JsonIgnore
     private Persona persona;
 
@@ -55,20 +57,20 @@ public class Entrenador {
     public Entrenador() {
     }
 
-    public Entrenador(Long entId, Persona persona, Especialidad entEspecialidad, String entProfesion, String entExperiencia) {
-        this.entId = entId;
-        this.persona = persona;
-        this.entEspecialidad = entEspecialidad;
-        this.entProfesion = entProfesion;
-        this.entExperiencia = entExperiencia;
-    }
-
     public Long getEntId() {
         return entId;
     }
 
     public void setEntId(Long entId) {
         this.entId = entId;
+    }
+
+    public Long getPerId() {
+        return perId;
+    }
+
+    public void setPerId(Long perId) {
+        this.perId = perId;
     }
 
     public Persona getPersona() {

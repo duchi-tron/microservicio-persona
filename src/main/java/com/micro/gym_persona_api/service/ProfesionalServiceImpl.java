@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.micro.gym_persona_api.model.Profesional;
 import com.micro.gym_persona_api.repository.ProfesionalRepository;
 
-import jakarta.validation.Valid;
-
 @Service
 public class ProfesionalServiceImpl implements ProfesionalService {
     private final ProfesionalRepository profesionalRepository;
@@ -21,9 +19,8 @@ public class ProfesionalServiceImpl implements ProfesionalService {
 
     @Override
     @Transactional
-    public Profesional guardarProfesional(@Valid Profesional profesional) {
+    public Profesional guardarProfesional(Profesional profesional) {
         validarProfesional(profesional);
-        vincularPersona(profesional);
         return profesionalRepository.save(profesional);
     }
 
@@ -43,8 +40,8 @@ public class ProfesionalServiceImpl implements ProfesionalService {
     }
 
     @Override
-    public Optional<Profesional> buscarPorPersonaCedula(String perCedula) {
-        return profesionalRepository.findByPersonaPerCedula(perCedula);
+    public Optional<Profesional> buscarPorPerId(Long perId) {
+        return profesionalRepository.findByPerId(perId);
     }
 
     @Override
@@ -53,17 +50,8 @@ public class ProfesionalServiceImpl implements ProfesionalService {
     }
 
     private void validarProfesional(Profesional profesional) {
-        if (profesional.getPersona() == null) {
-            throw new IllegalArgumentException("La persona es obligatoria para el profesional");
-        }
-        if (profesional.getPersona().getPerCedula() == null || profesional.getPersona().getPerCedula().isBlank()) {
-            throw new IllegalArgumentException("La cédula es obligatoria");
-        }
-        if (profesional.getPersona().getPerNombres() == null || profesional.getPersona().getPerNombres().isBlank()) {
-            throw new IllegalArgumentException("Los nombres son obligatorios");
-        }
-        if (profesional.getPersona().getPerApellidos() == null || profesional.getPersona().getPerApellidos().isBlank()) {
-            throw new IllegalArgumentException("Los apellidos son obligatorios");
+        if (profesional.getPerId() == null) {
+            throw new IllegalArgumentException("El perId es obligatorio para el profesional");
         }
         if (profesional.getMedNumeroLicencia() == null || profesional.getMedNumeroLicencia().isBlank()) {
             throw new IllegalArgumentException("El número de licencia es obligatorio");
@@ -75,12 +63,6 @@ public class ProfesionalServiceImpl implements ProfesionalService {
         Optional<Profesional> existente = profesionalRepository.findByMedNumeroLicencia(profesional.getMedNumeroLicencia());
         if (existente.isPresent()) {
             throw new IllegalArgumentException("Ya existe un profesional con esa licencia: " + profesional.getMedNumeroLicencia());
-        }
-    }
-
-    private void vincularPersona(Profesional profesional) {
-        if (profesional.getPersona() != null) {
-            profesional.setPersona(profesional.getPersona());
         }
     }
 

@@ -51,11 +51,11 @@ public EntrenadorServiceImpl(EntrenadorRepository entrenadorRepository) {
 
     @Override
     @Transactional
-    public void eliminarEntrenador(Long entId) {
-        if (!entrenadorRepository.existsById(entId)) {
-            throw new RuntimeException("No se encontro entrenador con el ID " + entId + " para eliminar");
+    public void eliminarEntrenador(Long perId) {
+        if (!entrenadorRepository.existsById(perId)) {
+            throw new RuntimeException("No se encontro entrenador con el ID " + perId + " para eliminar");
         }
-        entrenadorRepository.deleteById(entId);
+        entrenadorRepository.deleteById(perId);
     }
 
     private void validarEntrenador(Entrenador entrenador) {

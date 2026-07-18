@@ -10,6 +10,6 @@ public interface ProfesionalService {
     List<Profesional> listarProfesionales();
     Optional<Profesional> buscarPorId(Long medUsuId);
     Optional<Profesional> buscarPorLicencia(String medNumeroLicencia);
-    Optional<Profesional> buscarPorPersonaCedula(String perCedula);
+    Optional<Profesional> buscarPorPerId(Long perId);
     List<Profesional> buscarPorEspecialidad(Profesional.Especialidad especialidad);
 }
