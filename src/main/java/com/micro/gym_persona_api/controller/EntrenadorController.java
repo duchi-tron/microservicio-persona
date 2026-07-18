@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,7 +17,7 @@ import com.micro.gym_persona_api.model.Entrenador;
 import com.micro.gym_persona_api.service.EntrenadorService;
 
 @RestController
-@RequestMapping("/api/entrenadores")
+@RequestMapping("/api/personas/entrenadores")
 public class EntrenadorController {
 
     private final EntrenadorService service;
@@ -43,8 +42,8 @@ public class EntrenadorController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entrenador no encontrado con ID: " + perId));
     }
 
-    @GetMapping("/especialidad")
-    public List<Entrenador> buscarPorEspecialidad(@RequestParam Entrenador.Especialidad especialidad) {
+    @GetMapping("/especialidad/{especialidad}")
+    public List<Entrenador> buscarPorEspecialidad(@PathVariable Entrenador.Especialidad especialidad) {
         return service.buscarPorEspecialidad(especialidad);
     }
 

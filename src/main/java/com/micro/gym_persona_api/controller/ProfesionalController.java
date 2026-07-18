@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.micro.gym_persona_api.model.Profesional;
@@ -16,7 +16,7 @@ import com.micro.gym_persona_api.service.ProfesionalService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/profesionales")
+@RequestMapping("/api/personas/profesionales")
 public class ProfesionalController {
 
     private final ProfesionalService service;
@@ -39,8 +39,8 @@ public class ProfesionalController {
         return service.listarProfesionales();
     }
 
-    @GetMapping("/especialidad")
-    public List<Profesional> buscarPorEspecialidad(@RequestParam Profesional.Especialidad especialidad) {
+    @GetMapping("/especialidad/{especialidad}")
+    public List<Profesional> buscarPorEspecialidad(@PathVariable Profesional.Especialidad especialidad) {
         return service.buscarPorEspecialidad(especialidad);
     }
 }

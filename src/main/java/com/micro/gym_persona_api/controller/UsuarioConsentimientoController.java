@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario-consentimientos")
+@RequestMapping("/api/personas/usuario-consentimientos")
 public class UsuarioConsentimientoController {
 
     private final UsuarioConsentimientoService service;
