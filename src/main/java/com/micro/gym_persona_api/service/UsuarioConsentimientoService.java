@@ -8,7 +8,6 @@ import com.micro.gym_persona_api.repository.UsuarioConsentimientoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +22,6 @@ public class UsuarioConsentimientoService {
                                         ConsentimientoRepository consentimientoRepository) {
         this.usuarioConsentimientoRepository = usuarioConsentimientoRepository;
         this.consentimientoRepository = consentimientoRepository;
-    }
-
-    @Transactional(readOnly = true)
-    public List<UsuarioConsentimiento> findByUsuId(Long usuId) {
-        return usuarioConsentimientoRepository.findById_UsuId(usuId);
     }
 
     @Transactional(readOnly = true)
@@ -57,29 +51,9 @@ public class UsuarioConsentimientoService {
         UsuarioConsentimiento uc = new UsuarioConsentimiento();
         uc.setId(new UsuarioConsentimientoId(usuId, conId));
         uc.setConsentimiento(consentimiento);
-        uc.setUsuConFechaAceptacion(LocalDate.now());
+        uc.setUsuConFechaAceptacion(java.time.LocalDate.now());
 
         return usuarioConsentimientoRepository.save(uc);
-    }
-
-    public UsuarioConsentimiento aceptarConsentimientoPorVersion(Long usuId, String versionDocumento) {
-        Consentimiento consentimiento = consentimientoRepository.findByConVersionDocumento(versionDocumento);
-        if (consentimiento == null) {
-            throw new IllegalArgumentException("Consentimiento no encontrado para versión: " + versionDocumento);
-        }
-        return aceptarConsentimiento(usuId, consentimiento.getConId());
-    }
-
-    @Transactional(readOnly = true)
-    public boolean haAceptado(Long usuId, Long conId) {
-        return usuarioConsentimientoRepository.existsById(new UsuarioConsentimientoId(usuId, conId));
-    }
-
-    @Transactional(readOnly = true)
-    public boolean haAceptadoVersion(Long usuId, String versionDocumento) {
-        Consentimiento c = consentimientoRepository.findByConVersionDocumento(versionDocumento);
-        if (c == null) return false;
-        return usuarioConsentimientoRepository.existsById(new UsuarioConsentimientoId(usuId, c.getConId()));
     }
 
     public void deleteById(UsuarioConsentimientoId id) {

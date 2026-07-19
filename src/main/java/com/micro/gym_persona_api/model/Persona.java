@@ -66,10 +66,6 @@ public class Persona {
     @JsonManagedReference("usuario-consentimiento-persona")
     private List<UsuarioConsentimiento> usuarioConsentimientos;
 
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("consentimiento-persona")
-    private List<Consentimiento> consentimientos;
-
     public Persona() {
     }
 
@@ -190,11 +186,4 @@ public class Persona {
         this.usuarioConsentimientos = usuarioConsentimientos;
     }
 
-    public List<Consentimiento> getConsentimientos() {
-        return consentimientos;
-    }
-
-    public void setConsentimientos(List<Consentimiento> consentimientos) {
-        this.consentimientos = consentimientos;
-    }
 }

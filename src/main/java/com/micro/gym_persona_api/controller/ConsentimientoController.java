@@ -24,10 +24,7 @@ public class ConsentimientoController {
         try {
             Consentimiento consentimiento = new Consentimiento();
             consentimiento.setConVersionDocumento(request.getConVersionDocumento());
-
-            com.micro.gym_persona_api.model.Persona persona = new com.micro.gym_persona_api.model.Persona();
-            persona.setPerId(request.getPerId());
-            consentimiento.setPersona(persona);
+            consentimiento.setConDetalles(request.getConDetalles());
 
             return ResponseEntity.status(201).body(service.save(consentimiento));
         } catch (IllegalArgumentException | IllegalStateException e) {
@@ -52,14 +49,5 @@ public class ConsentimientoController {
         return service.findByVersionDocumento(versionDocumento)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/persona/{perId}")
-    public ResponseEntity<List<Consentimiento>> obtenerPorPersona(@PathVariable Long perId) {
-        List<Consentimiento> consentimientos = service.findByPerId(perId);
-        if (consentimientos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(consentimientos);
     }
 }

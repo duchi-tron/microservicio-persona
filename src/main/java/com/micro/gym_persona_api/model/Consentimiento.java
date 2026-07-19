@@ -47,6 +47,7 @@ public class Consentimiento {
         this.conId = conId;
         this.conVersionDocumento = conVersionDocumento;
         this.persona = persona;
+        this.conDetalles = conDetalles;
     }
 
     public Long getConId() {
@@ -83,5 +84,13 @@ public class Consentimiento {
 
     public void setUsuarioConsentimientos(List<UsuarioConsentimiento> usuarioConsentimientos) {
         this.usuarioConsentimientos = usuarioConsentimientos;
+    }
+
+    public String getConDetalles() {
+        return conDetalles;
+    }
+
+    public void setConDetalles(String conDetalles) {
+        this.conDetalles = conDetalles;
     }
 }

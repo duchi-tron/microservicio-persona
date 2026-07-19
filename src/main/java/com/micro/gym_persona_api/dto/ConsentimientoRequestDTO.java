@@ -1,7 +1,6 @@
 package com.micro.gym_persona_api.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class ConsentimientoRequestDTO {
@@ -10,15 +9,15 @@ public class ConsentimientoRequestDTO {
     @Size(max = 100, message = "La versión del documento no puede exceder 100 caracteres")
     private String conVersionDocumento;
 
-    @NotNull(message = "El ID de persona es obligatorio")
-    private Long perId;
+    @Size(max = 255, message = "Los detalles no pueden exceder 255 caracteres")
+    private String conDetalles;
 
     public ConsentimientoRequestDTO() {
     }
 
-    public ConsentimientoRequestDTO(String conVersionDocumento, Long perId) {
+    public ConsentimientoRequestDTO(String conVersionDocumento, String conDetalles) {
         this.conVersionDocumento = conVersionDocumento;
-        this.perId = perId;
+        this.conDetalles = conDetalles;
     }
 
     public String getConVersionDocumento() {
@@ -29,11 +28,11 @@ public class ConsentimientoRequestDTO {
         this.conVersionDocumento = conVersionDocumento;
     }
 
-    public Long getPerId() {
-        return perId;
+    public String getConDetalles() {
+        return conDetalles;
     }
 
-    public void setPerId(Long perId) {
-        this.perId = perId;
+    public void setConDetalles(String conDetalles) {
+        this.conDetalles = conDetalles;
     }
 }
