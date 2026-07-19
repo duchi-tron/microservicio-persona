@@ -7,8 +7,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -28,25 +26,19 @@ public class Consentimiento {
     @Column(name = "con_version_documento", length = 100, nullable = false, unique = true)
     private String conVersionDocumento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "per_id", referencedColumnName = "per_id", nullable = false)
-    @JsonBackReference("consentimiento-persona")
-    private Persona persona;
+    @Column(name = "con_detalles", length = 255)
+    private String conDetalles;
 
     @OneToMany(mappedBy = "consentimiento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference("usuario-consentimiento-consentimiento")
     private List<UsuarioConsentimiento> usuarioConsentimientos;
-    
-    @Column(name = "con_detalles", length = 255)
-    private String conDetalles;
 
     public Consentimiento() {
     }
 
-    public Consentimiento(Long conId, String conVersionDocumento, Persona persona) {
+    public Consentimiento(Long conId, String conVersionDocumento, String conDetalles) {
         this.conId = conId;
         this.conVersionDocumento = conVersionDocumento;
-        this.persona = persona;
         this.conDetalles = conDetalles;
     }
 
@@ -66,16 +58,12 @@ public class Consentimiento {
         this.conVersionDocumento = conVersionDocumento;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public String getConDetalles() {
+        return conDetalles;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
-    }
-
-    public Long getPerId() {
-        return persona != null ? persona.getPerId() : null;
+    public void setConDetalles(String conDetalles) {
+        this.conDetalles = conDetalles;
     }
 
     public List<UsuarioConsentimiento> getUsuarioConsentimientos() {
@@ -84,13 +72,5 @@ public class Consentimiento {
 
     public void setUsuarioConsentimientos(List<UsuarioConsentimiento> usuarioConsentimientos) {
         this.usuarioConsentimientos = usuarioConsentimientos;
-    }
-
-    public String getConDetalles() {
-        return conDetalles;
-    }
-
-    public void setConDetalles(String conDetalles) {
-        this.conDetalles = conDetalles;
     }
 }
